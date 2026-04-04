@@ -1,0 +1,80 @@
+{
+    "log": {
+    	  //"access": "/var/log/xray/access.log",
+       //"error": "/var/log/xray/error.log",    	  
+        "loglevel": "info"
+    },
+    "dns": {
+        "servers": [
+        		"https+local://dns.google/dns-query"
+			//"https+local://1.1.1.1/dns-query"
+        ]
+    },    
+    "inbounds": [   			 	
+        {
+            "listen": "::",
+            "port": 443,
+            "protocol": "vless",
+            "settings": {            	 
+                "clients": [
+                    {
+                    	//"testseed": [123,421,512,66]
+                        "id": "", // User ID, perform xray uuid generation, or a string of 1-30 bytes
+                        "flow": "xtls-rprx-vision"                
+                    }
+                    
+                ],
+                "decryption": "none"               
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "reality",
+                "realitySettings": {
+                    "target": "comcr.cl:443",
+                    "serverNames": ["comcr.cl","www.comcr.cl"],
+                    "privateKey": "", // 执行 xray x25519 生成，填 "Private key" 的值
+                    "shortIds": [""]
+                }                          
+            },            
+            "sniffing": {
+                "enabled": true,
+                "destOverride": ["http","tls","quic"]
+            }             
+        }
+    ],    
+    "outbounds": [
+        {
+            "protocol": "direct",   
+            "tag": "direct",
+            "settings": {
+                "domainStrategy": "ForceIPv4"
+            },         
+            "streamSettings": {
+                "sockopt": {
+                    "tcpFastOpen": true
+                }
+            }
+        },
+        {
+            "protocol": "block",
+            "tag": "block"
+        }
+    ],
+     "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [            
+            {
+                "ip": ["geoip:private"],
+                "outboundTag": "block"
+            }
+        ]
+    },  
+     "policy": {
+        "levels": {
+            "0": {
+                "handshake": 2,
+                "connIdle": 120
+            }
+        }
+    }   
+}
