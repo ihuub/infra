@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# 检查是否以 root 权限运行
+if [ "$EUID" -ne 0 ]; then 
+  echo "错误：请使用 sudo 或 root 账号运行此脚本。"
+  exit 1
+fi
+
+echo "---------- 请选择要执行的操作 ----------"
+echo "1) 开启 BBR (修改 sysctl.conf 并生效)"
+echo "2) 设置上海时区"
+echo "3) 限制 Journald 日志大小为 20M"
+echo "4) apt update && apt upgrade -y"
+echo "5) apt dist-upgrade -y"
+echo "6) nginx -t && systemctl restart nginx"
+echo "7) 清空 nginx 日志"
+echo "8) 清空 fail2ban 日志并重启"
+echo "9) systemctl enable nftables && systemctl restart nftables"
+echo "10) nft list ruleset"
+echo "q) 退出"
+echo "---------------------------------------"
+
+read -p "请输入编号 [1-10/q]: " choice
+
+# 定义一个辅助函数，用于统一打印格式
+run_cmd() {
+    echo -e "\n[执行命令]: $1"
+    eval "$1"
+}
+
+case $choice in
+    1)
+        run_cmd "grep -q 'net.core.default_qdisc=fq' /etc/sysctl.conf || echo 'net.core.default_qdisc=fq' >> /etc/sysctl.conf"
+        run_cmd "grep -q 'net.ipv4.tcp_congestion_control=bbr' /etc/sysctl.conf || echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.conf"
+        run_cmd "sysctl -p"
+        ;;
+    2)
+        run_cmd "timedatectl set-timezone Asia/Shanghai"
+        run_cmd "timedatectl status"
+        ;;
+    3)
+        run_cmd "sed -i 's/^#\?SystemMaxUse=.*/SystemMaxUse=20M/' /etc/systemd/journald.conf"
+        run_cmd "systemctl restart systemd-journald"        
+        ;;
+    4)
+        run_cmd "apt update && apt upgrade -y"
+        ;;
+    5)
+        run_cmd "apt dist-upgrade -y"
+        ;;
+    6)
+        run_cmd "nginx -t && systemctl restart nginx"
+        ;;
+    7)
+        run_cmd "truncate -s 0 /var/log/nginx/error.log /var/log/nginx/access.log"
+        echo "Nginx 日志已清空。"
+        ;;
+    8)
+        run_cmd "truncate -s 0 /var/log/fail2ban.log && systemctl restart fail2ban"
+        echo "Fail2ban 日志已清空并重启服务。"
+        ;;
+    9)
+        run_cmd "systemctl enable nftables"
+        run_cmd "systemctl restart nftables"
+        ;;
+    10)
+        run_cmd "nft list ruleset"
+        ;;
+    q)
+        echo "退出程序。"
+        exit 0
+        ;;
+    *)
+        echo "无效选项，程序退出。"
+        exit 1
+        ;;
+esac
+
+echo -e "\n---------------------------------------"
+echo "任务处理完成！"
