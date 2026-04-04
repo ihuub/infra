@@ -15,8 +15,11 @@ echo "5) apt dist-upgrade -y"
 echo "6) nginx -t && systemctl restart nginx"
 echo "7) 清空 nginx 日志"
 echo "8) 清空 fail2ban 日志并重启"
-echo "9) systemctl enable nftables && systemctl restart nftables"
-echo "10) nft list ruleset"
+echo "9) systemctl enable nftables"
+echo "10) systemctl restart nftables"
+echo "11) nft list ruleset"
+echo "12) systemctl enable xray"
+echo "13) 重启xray并查看状态"
 echo "q) 退出"
 echo "---------------------------------------"
 
@@ -60,11 +63,20 @@ case $choice in
         echo "Fail2ban 日志已清空并重启服务。"
         ;;
     9)
-        run_cmd "systemctl enable nftables"
-        run_cmd "systemctl restart nftables"
+        run_cmd "systemctl enable nftables"        
         ;;
     10)
+        run_cmd "systemctl restart nftables"
+        ;;
+    11)
         run_cmd "nft list ruleset"
+        ;;
+    12)
+        run_cmd "systemctl enable xray"
+        ;;
+    13)
+        run_cmd "systemctl restart xray"
+        run_cmd "systemctl status xray --no-pager"
         ;;
     q)
         echo "退出程序。"
