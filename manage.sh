@@ -20,6 +20,7 @@ echo "10) systemctl restart nftables"
 echo "11) nft list ruleset"
 echo "12) systemctl enable xray"
 echo "13) 重启xray并查看状态"
+echo "14) find删除/var/log多余日志"
 echo "q) 退出"
 echo "---------------------------------------"
 
@@ -77,6 +78,9 @@ case $choice in
     13)
         run_cmd "systemctl restart xray"
         run_cmd "systemctl status xray --no-pager"
+        ;;
+    14)
+        run_cmd "find /var/log -type f -regex '.*\.[01]' -print -delete"
         ;;
     q)
         echo "退出程序。"
