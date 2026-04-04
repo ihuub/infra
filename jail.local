@@ -1,0 +1,11 @@
+[DEFAULT]
+findtime = 1d
+maxretry = 1
+bantime  = 1w
+banaction = nftables-allports[blocktype= drop]
+ignoreip = 127.0.0.1/8 ::1
+
+[sshd]
+enabled = true
+filter  = sshd[mode=aggressive]
+backend = systemd
