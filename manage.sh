@@ -82,7 +82,7 @@ case $choice in
         ;;
     14)
         # 优化：删除以 .0 或 .1 结尾的旧日志文件
-        run_cmd "find /var/log -type f -regex '.*\.[01]' -delete"
+        run_cmd "find /var/log -type f -regex '.*\.[01]' -print -delete"
         echo "清理完成。"
         ;;
     15)
