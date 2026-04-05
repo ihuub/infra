@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # 检查是否以 root 权限运行
-if [ "$EUID" -ne 0 ]; then 
-  echo "错误：请使用 sudo 或 root 账号运行此脚本。"
-  exit 1
+if [ "$EUID" -ne 0 ]; then
+    echo "错误：请使用 sudo 或 root 账号运行此脚本。"
+    exit 1
 fi
 
 echo "---------- 请选择要执行的操作 ----------"
@@ -25,9 +25,9 @@ echo "15) 给予nginx对f2b日志文件的读取权限"
 echo "q) 退出"
 echo "---------------------------------------"
 
-read -p "请输入编号 [1-10/q]: " choice
+read -p "请输入编号 [1-15/q]: " choice
 
-# 定义一个辅助函数，用于统一打印格式
+# 定义一个辅助函数
 run_cmd() {
     echo -e "\n[执行命令]: $1"
     eval "$1"
@@ -45,7 +45,7 @@ case $choice in
         ;;
     3)
         run_cmd "sed -i 's/^#\?SystemMaxUse=.*/SystemMaxUse=20M/' /etc/systemd/journald.conf"
-        run_cmd "systemctl restart systemd-journald"        
+        run_cmd "systemctl restart systemd-journald"
         ;;
     4)
         run_cmd "apt update && apt upgrade -y"
@@ -65,7 +65,7 @@ case $choice in
         echo "Fail2ban 日志已清空并重启服务。"
         ;;
     9)
-        run_cmd "systemctl enable nftables"        
+        run_cmd "systemctl enable nftables"
         ;;
     10)
         run_cmd "systemctl restart nftables"
@@ -81,10 +81,17 @@ case $choice in
         run_cmd "systemctl status xray --no-pager"
         ;;
     14)
-        run_cmd "find /var/log -type f -regex '.*\.[01]' -print -delete"
+        # 优化：删除以 .0 或 .1 结尾的旧日志文件
+        run_cmd "find /var/log -type f -regex '.*\.[01]' -delete"
+        echo "清理完成。"
         ;;
     15)
-        run_cmd "setfacl -m u:nginx:r /var/log/fail2ban.log"
+        # 增加判断，防止 setfacl 未安装导致报错
+        if command -v setfacl >/dev/null; then
+            run_cmd "setfacl -m u:nginx:r /var/log/fail2ban.log"
+        else
+            echo "错误：未安装 acl 工具，请先执行 apt install acl"
+        fi
         ;;
     q)
         echo "退出程序。"
