@@ -21,6 +21,7 @@ echo "11) nft list ruleset"
 echo "12) systemctl enable xray"
 echo "13) 重启xray并查看状态"
 echo "14) find删除/var/log多余日志"
+echo "15) 给予nginx对f2b日志文件的读取权限
 echo "q) 退出"
 echo "---------------------------------------"
 
@@ -81,6 +82,9 @@ case $choice in
         ;;
     14)
         run_cmd "find /var/log -type f -regex '.*\.[01]' -print -delete"
+        ;;
+    15)
+        run_cmd "setfacl -m u:nginx:r /var/log/fail2ban.log"
         ;;
     q)
         echo "退出程序。"
