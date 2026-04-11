@@ -22,10 +22,11 @@ echo "12) systemctl enable xray"
 echo "13) 重启 xray 并查看状态"
 echo "14) find 删除 /var/log 多余日志"
 echo "15) 给予 nginx 对 f2b 日志文件的读取权限"
+echo "16) 修改 mtu 后 netplan apply
 echo "q) 退出"
 echo "---------------------------------------"
 
-read -p "请输入编号 [1-15/q]: " choice
+read -p "请输入编号 [1-16/q]: " choice
 
 # 定义一个辅助函数
 run_cmd() {
@@ -88,6 +89,9 @@ case $choice in
         else
             echo "错误：未安装 acl 工具，请先执行 apt install acl"
         fi
+        ;;
+    16)
+        run_cmd "netplan apply"
         ;;
     q)
         exit 0
