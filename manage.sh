@@ -13,7 +13,7 @@ echo "3) 限制 Journald 日志大小为 20M"
 echo "4) apt update && apt upgrade -y"
 echo "5) apt dist-upgrade -y"
 echo "6) nginx -t && systemctl restart nginx"
-echo "7) 清空 nginx 日志"
+echo "7) truncate清空 nginx 日志"
 echo "8) 清空 fail2ban 日志并重启"
 echo "9) systemctl enable nftables"
 echo "10) systemctl restart nftables"
@@ -57,12 +57,10 @@ case $choice in
         run_cmd "nginx -t && systemctl restart nginx"
         ;;
     7)
-        run_cmd "truncate -s 0 /var/log/nginx/error.log /var/log/nginx/access.log"
-        echo "Nginx 日志已清空。"
+        run_cmd "truncate -s 0 /var/log/nginx/error.log /var/log/nginx/access.log"        
         ;;
     8)
-        run_cmd "truncate -s 0 /var/log/fail2ban.log && systemctl restart fail2ban"
-        echo "Fail2ban 日志已清空并重启服务。"
+        run_cmd "truncate -s 0 /var/log/fail2ban.log && systemctl restart fail2ban"        
         ;;
     9)
         run_cmd "systemctl enable nftables"
@@ -83,7 +81,6 @@ case $choice in
     14)
         # 优化：删除以 .0 或 .1 结尾的旧日志文件
         run_cmd "find /var/log -type f -regex '.*\.[01]' -print -delete"
-        echo "清理完成。"
         ;;
     15)
         # 增加判断，防止 setfacl 未安装导致报错
@@ -94,7 +91,6 @@ case $choice in
         fi
         ;;
     q)
-        echo "退出程序。"
         exit 0
         ;;
     *)
