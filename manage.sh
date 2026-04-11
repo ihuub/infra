@@ -13,15 +13,15 @@ echo "3) 限制 Journald 日志大小为 20M"
 echo "4) apt update && apt upgrade -y"
 echo "5) apt dist-upgrade -y"
 echo "6) nginx -t && systemctl restart nginx"
-echo "7) truncate清空 nginx 日志"
+echo "7) truncate 清空 nginx 日志"
 echo "8) 清空 fail2ban 日志并重启"
 echo "9) systemctl enable nftables"
 echo "10) systemctl restart nftables"
 echo "11) nft list ruleset"
 echo "12) systemctl enable xray"
-echo "13) 重启xray并查看状态"
-echo "14) find删除/var/log多余日志"
-echo "15) 给予nginx对f2b日志文件的读取权限"
+echo "13) 重启 xray 并查看状态"
+echo "14) find 删除 /var/log 多余日志"
+echo "15) 给予 nginx 对 f2b 日志文件的读取权限"
 echo "q) 退出"
 echo "---------------------------------------"
 
@@ -79,7 +79,6 @@ case $choice in
         run_cmd "systemctl status xray --no-pager"
         ;;
     14)
-        # 优化：删除以 .0 或 .1 结尾的旧日志文件
         run_cmd "find /var/log -type f -regex '.*\.[01]' -print -delete"
         ;;
     15)
@@ -94,7 +93,6 @@ case $choice in
         exit 0
         ;;
     *)
-        echo "无效选项，程序退出。"
         exit 1
         ;;
 esac
