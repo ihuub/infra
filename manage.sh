@@ -22,7 +22,7 @@ echo "12) systemctl enable xray"
 echo "13) 重启 xray 并查看状态"
 echo "14) find 删除 /var/log 多余日志"
 echo "15) 给予 nginx 对 f2b 日志文件的读取权限"
-echo "16) 修改 mtu 后 netplan apply
+echo "16) 修改 mtu 后 netplan apply"
 echo "q) 退出"
 echo "---------------------------------------"
 
