@@ -26,6 +26,8 @@ echo "16) find 删除 /var/log 多余日志"
 echo "17) 给予 nginx 对 f2b 日志文件的读取权限"
 echo "18) 修改 mtu 后 netplan apply"
 echo "19) systemctl enable systemctl restart systemctl status"
+echo "20) tcpdump -ni any port 22 and ip6"
+echo "21) ss -lptn 'sport = :443' "
 echo "q) 退出"
 echo "---------------------------------------"
 
