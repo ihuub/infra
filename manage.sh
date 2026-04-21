@@ -43,10 +43,10 @@ case $choice in
         ;;
     2)
         run_cmd "timedatectl set-timezone Asia/Shanghai"
-        run_cmd "timedatectl status"
+        run_cmd "timedatectl"
         ;;
     3)
-        run_cmd "sed -i 's/^#\?SystemMaxUse=.*/SystemMaxUse=20M/' /etc/systemd/journald.conf"        
+        run_cmd "sed -i -e '/^#SystemMaxUse=/a SystemMaxUse=20M' -e '/^#SystemMaxFileSize=/a SystemMaxFileSize=10M' /etc/systemd/journald.conf"
         ;;
     4)
         run_cmd "systemctl restart systemd-journald"
