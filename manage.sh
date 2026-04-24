@@ -7,7 +7,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 echo "---------- 请选择要执行的操作 ----------"
-echo "1) 开启 BBR (修改 sysctl.conf 并生效)"
+echo "1) 开启 BBR (修改 sysctl.conf 并 sysctl -p 查看)"
 echo "2) 设置上海时区"
 echo "3) 限制 Journald 日志 20M/10M"
 echo "4) 限制 Journald 日志 100M/50M"
