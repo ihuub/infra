@@ -9,7 +9,7 @@ apt update && sudo apt upgrade -y
 ## 2. 安装 MySQL Server
 
 ```bash
-sudo apt install mysql-server -y
+apt install mysql-server -y
 ```
 
 ## 3. 安全配置 (必须执行)
@@ -44,7 +44,6 @@ CREATE DATABASE cloudreve CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 **步骤 1：创建用户**
 ```sql
--- 创建一个可以从本地登录的用户
 CREATE USER 'cloudreve'@'localhost' IDENTIFIED BY 'password';
 ```
 
