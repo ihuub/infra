@@ -58,8 +58,6 @@ php_admin_value[memory_limit] = 512M
 
 **文件路径**: `/etc/php/8.3/fpm/conf.d/10-opcache.ini`
 
-> **说明**: 开启 JIT 辅助 CPU 计算，增大内存缓存以容纳所有 PHP 文件。
-
 ```ini
 zend_extension=opcache.so
 
@@ -73,10 +71,6 @@ opcache.interned_strings_buffer=16
 
 ; 最大缓存文件数
 opcache.max_accelerated_files=20000
-
-; JIT 编译器配置 (Tracing 模式)
-opcache.jit_buffer_size=128M
-opcache.jit=tracing
 
 ```
 
