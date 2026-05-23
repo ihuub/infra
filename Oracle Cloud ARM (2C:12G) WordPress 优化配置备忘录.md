@@ -1,31 +1,27 @@
----
+# Oracle Cloud ARM (2C/12G) WordPress ä¼˜åŒ–é…ç½®å¤‡å¿˜å½•
 
-# Oracle Cloud ARM (2C/12G) WordPress ÓÅ»¯ÅäÖÃ±¸ÍüÂ¼
+**ç”Ÿæˆæ—¶é—´**: 2026å¹´02æœˆ03æ—¥
+**æœåŠ¡å™¨æ¶æ„**: ARM64 (2 vCPU, 12GB RAM)
+**ç¯å¢ƒç»„ä»¶**: Nginx, PHP 8.3, MariaDB, Redis
 
-**Éú³ÉÊ±¼ä**: 2026Äê02ÔÂ03ÈÕ
-**·şÎñÆ÷¼Ü¹¹**: ARM64 (2 vCPU, 12GB RAM)
-**»·¾³×é¼ş**: Nginx, PHP 8.3, MariaDB, Redis
+## 1. MariaDB æ•°æ®åº“é…ç½®
 
----
+**æ–‡ä»¶è·¯å¾„**: `/etc/mysql/mariadb.conf.d/50-server.cnf`
 
-## 1. MariaDB Êı¾İ¿âÅäÖÃ
-
-**ÎÄ¼şÂ·¾¶**: `/etc/mysql/mariadb.conf.d/50-server.cnf`
-
-> **ËµÃ÷**: ÀûÓÃ´óÄÚ´æÓÅÊÆ¼õÉÙ´ÅÅÌ¶ÁÈ¡£¬ÓÅ»¯Ğ´Èë²ßÂÔ¡£
+> **è¯´æ˜**: åˆ©ç”¨å¤§å†…å­˜ä¼˜åŠ¿å‡å°‘ç£ç›˜è¯»å–ï¼Œä¼˜åŒ–å†™å…¥ç­–ç•¥ã€‚
 
 ```ini
 [mysqld]
-# ºËĞÄÄÚ´æ·ÖÅä (×ÜÄÚ´æµÄ 50%)
+# æ ¸å¿ƒå†…å­˜åˆ†é… (æ€»å†…å­˜çš„ 50%)
 innodb_buffer_pool_size = 6G
 
-# I/O Ğ´ÈëÓÅ»¯ (¼«´óÌáÉıĞ´ÈëĞÔÄÜ)
+# I/O å†™å…¥ä¼˜åŒ– (æå¤§æå‡å†™å…¥æ€§èƒ½)
 innodb_flush_log_at_trx_commit = 2
 
-# ×î´óÁ¬½ÓÊı
+# æœ€å¤§è¿æ¥æ•°
 max_connections = 500
 
-# ½ûÓÃ¾É°æ²éÑ¯»º´æ
+# ç¦ç”¨æ—§ç‰ˆæŸ¥è¯¢ç¼“å­˜
 query_cache_type = 0
 query_cache_size = 0
 
@@ -33,52 +29,52 @@ query_cache_size = 0
 
 ---
 
-## 2. PHP 8.3 FPM ½ø³Ì³ØÅäÖÃ
+## 2. PHP 8.3 FPM è¿›ç¨‹æ± é…ç½®
 
-**ÎÄ¼şÂ·¾¶**: `/etc/php/8.3/fpm/pool.d/www.conf`
+**æ–‡ä»¶è·¯å¾„**: `/etc/php/8.3/fpm/pool.d/www.conf`
 
-> **ËµÃ÷**: ÏŞÖÆ×Ó½ø³ÌÊıÁ¿ÒÔ±£»¤ 2 ºË CPU ²»±»¹ıÔØ£¬Í¬Ê±¸øÓè³ä×ãµÄÄÚ´æ¡£
+> **è¯´æ˜**: é™åˆ¶å­è¿›ç¨‹æ•°é‡ä»¥ä¿æŠ¤ 2 æ ¸ CPU ä¸è¢«è¿‡è½½ï¼ŒåŒæ—¶ç»™äºˆå……è¶³çš„å†…å­˜ã€‚
 
 ```ini
-; ½ø³Ì¹ÜÀíÄ£Ê½
+; è¿›ç¨‹ç®¡ç†æ¨¡å¼
 pm = dynamic
 
-; ×î´ó×Ó½ø³Ì (·ÀÖ¹ CPU 100% ¿¨ËÀ)
+; æœ€å¤§å­è¿›ç¨‹ (é˜²æ­¢ CPU 100% å¡æ­»)
 pm.max_children = 40
 
-; Æô¶¯Óë¿ÕÏĞ½ø³Ì¿ØÖÆ
+; å¯åŠ¨ä¸ç©ºé—²è¿›ç¨‹æ§åˆ¶
 pm.start_servers = 10
 pm.min_spare_servers = 5
 pm.max_spare_servers = 15
 
-; µ¥½ø³ÌÄÚ´æÏŞÖÆ
+; å•è¿›ç¨‹å†…å­˜é™åˆ¶
 php_admin_value[memory_limit] = 512M
 
 ```
 
 ---
 
-## 3. PHP Opcache Óë JIT ÅäÖÃ
+## 3. PHP Opcache ä¸ JIT é…ç½®
 
-**ÎÄ¼şÂ·¾¶**: `/etc/php/8.3/fpm/conf.d/10-opcache.ini`
+**æ–‡ä»¶è·¯å¾„**: `/etc/php/8.3/fpm/conf.d/10-opcache.ini`
 
-> **ËµÃ÷**: ¿ªÆô JIT ¸¨Öú CPU ¼ÆËã£¬Ôö´óÄÚ´æ»º´æÒÔÈİÄÉËùÓĞ PHP ÎÄ¼ş¡£
+> **è¯´æ˜**: å¼€å¯ JIT è¾…åŠ© CPU è®¡ç®—ï¼Œå¢å¤§å†…å­˜ç¼“å­˜ä»¥å®¹çº³æ‰€æœ‰ PHP æ–‡ä»¶ã€‚
 
 ```ini
 zend_extension=opcache.so
 
-; ¿ªÆô Opcache
+; å¼€å¯ Opcache
 opcache.enable=1
 opcache.enable_cli=1
 
-; ÄÚ´æÏûºÄÅäÖÃ (MB)
+; å†…å­˜æ¶ˆè€—é…ç½® (MB)
 opcache.memory_consumption=256
 opcache.interned_strings_buffer=16
 
-; ×î´ó»º´æÎÄ¼şÊı
+; æœ€å¤§ç¼“å­˜æ–‡ä»¶æ•°
 opcache.max_accelerated_files=20000
 
-; JIT ±àÒëÆ÷ÅäÖÃ (Tracing Ä£Ê½)
+; JIT ç¼–è¯‘å™¨é…ç½® (Tracing æ¨¡å¼)
 opcache.jit_buffer_size=128M
 opcache.jit=tracing
 
@@ -86,34 +82,34 @@ opcache.jit=tracing
 
 ---
 
-## 4. Redis ·şÎñÆ÷ÅäÖÃ
+## 4. Redis æœåŠ¡å™¨é…ç½®
 
-**ÎÄ¼şÂ·¾¶**: `/etc/redis/redis.conf`
+**æ–‡ä»¶è·¯å¾„**: `/etc/redis/redis.conf`
 
-> **ËµÃ÷**: ÏŞÖÆ×î´óÄÚ´æ·ÀÖ¹ÏµÍ³ OOM£¬²ÉÓÃ LRU Ëã·¨×Ô¶¯ÇåÀí¾É»º´æ¡£
+> **è¯´æ˜**: é™åˆ¶æœ€å¤§å†…å­˜é˜²æ­¢ç³»ç»Ÿ OOMï¼Œé‡‡ç”¨ LRU ç®—æ³•è‡ªåŠ¨æ¸…ç†æ—§ç¼“å­˜ã€‚
 
 ```conf
-# ÄÚ´æÉÏÏŞ
+# å†…å­˜ä¸Šé™
 maxmemory 1gb
 
-# ÄÚ´æÌÔÌ­²ßÂÔ (ËùÓĞ¼üÖĞÊ¹ÓÃ LRU Ëã·¨)
+# å†…å­˜æ·˜æ±°ç­–ç•¥ (æ‰€æœ‰é”®ä¸­ä½¿ç”¨ LRU ç®—æ³•)
 maxmemory-policy allkeys-lru
 
 ```
 
 ---
 
-## 5. WordPress ÅäÖÃÎÄ¼ş
+## 5. WordPress é…ç½®æ–‡ä»¶
 
-**ÎÄ¼şÂ·¾¶**: `wp-config.php` (Î»ÓÚÍøÕ¾¸ùÄ¿Â¼)
+**æ–‡ä»¶è·¯å¾„**: `wp-config.php` (ä½äºç½‘ç«™æ ¹ç›®å½•)
 
-> **ËµÃ÷**: Á¬½Ó Redis ²¢¿ªÆô WordPress »º´æ»úÖÆ¡£
+> **è¯´æ˜**: è¿æ¥ Redis å¹¶å¼€å¯ WordPress ç¼“å­˜æœºåˆ¶ã€‚
 
 ```php
-// ¿ªÆô»º´æ×Ü¿ª¹Ø
+// å¼€å¯ç¼“å­˜æ€»å¼€å…³
 define( 'WP_CACHE', true );
 
-// Redis TCP Á¬½ÓÅäÖÃ
+// Redis TCP è¿æ¥é…ç½®
 define( 'WP_REDIS_HOST', '127.0.0.1' );
 define( 'WP_REDIS_PORT', 6379 );
 
