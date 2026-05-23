@@ -2,9 +2,9 @@
 
 **生成时间**: 2026年02月03日
 **服务器架构**: ARM64 (2 vCPU, 12GB RAM)
-**环境组件**: Nginx, PHP 8.3, MariaDB, Redis
+**环境组件**: Nginx, PHP 8.3, MariaDB 10.11, Redis
 
-## 1. MariaDB 数据库配置
+## 1. MariaDB 10.11 数据库配置
 
 **文件路径**: `/etc/mysql/mariadb.conf.d/50-server.cnf`
 
