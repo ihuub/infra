@@ -40,12 +40,12 @@ query_cache_size = 0
 pm = dynamic
 
 ; 最大子进程 (防止 CPU 100% 卡死)
-pm.max_children = 40
+pm.max_children = 20
 
 ; 启动与空闲进程控制
-pm.start_servers = 10
-pm.min_spare_servers = 5
-pm.max_spare_servers = 15
+pm.start_servers = 3
+pm.min_spare_servers = 3
+pm.max_spare_servers = 6
 
 ; 单进程内存限制
 php_admin_value[memory_limit] = 512M
