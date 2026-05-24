@@ -54,7 +54,7 @@ php_admin_value[memory_limit] = 512M
 
 ---
 
-## 3. PHP Opcache 与 JIT 配置
+## 3. PHP Opcache 配置
 
 **文件路径**: `/etc/php/8.3/fpm/conf.d/10-opcache.ini`
 
