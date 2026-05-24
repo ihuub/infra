@@ -63,7 +63,7 @@ zend_extension=opcache.so
 
 ; 开启 Opcache
 opcache.enable=1
-opcache.enable_cli=1
+opcache.enable_cli=0
 
 ; 内存消耗配置 (MB)
 opcache.memory_consumption=256
