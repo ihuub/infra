@@ -44,7 +44,7 @@ pm.max_children = 20
 
 ; 启动与空闲进程控制
 pm.start_servers = 3
-pm.min_spare_servers = 3
+pm.min_spare_servers = 2
 pm.max_spare_servers = 6
 
 ; 单进程内存限制
