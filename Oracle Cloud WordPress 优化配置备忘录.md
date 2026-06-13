@@ -21,10 +21,9 @@
 innodb_flush_log_at_trx_commit = 2
 
 # 最大连接数
-max_connections = 150
+max_connections = 60
 
-# 核心内存分配 (总内存的 50%)
-innodb_buffer_pool_size = 2G
+innodb_buffer_pool_size = 3G
 ```
 
 ---
@@ -70,7 +69,7 @@ opcache.memory_consumption=256
 opcache.interned_strings_buffer=16
 
 ; 最大缓存文件数
-opcache.max_accelerated_files=20000
+opcache.max_accelerated_files=10000
 
 ```
 
@@ -98,11 +97,16 @@ maxmemory-policy allkeys-lru
 **文件路径**: `wp-config.php` (位于网站根目录)
 
 ```php
-// 开启缓存总开关
+//--- 开启缓存总开关 ---
 define( 'WP_CACHE', true );
 
-// Redis TCP 连接配置
-define( 'WP_REDIS_HOST', '127.0.0.1' );
-define( 'WP_REDIS_PORT', 6379 );
+// --- Redis TCP 连接配置 (删除 SCHEME 和 PATH) ---
+define('WP_REDIS_HOST', '127.0.0.1');
+define('WP_REDIS_PORT', 6379);
+
+define('WP_REDIS_PERSISTENT', true);
+define('WP_REDIS_DATABASE', 0);
+define('WP_REDIS_TIMEOUT', 1);
+define('WP_REDIS_READ_TIMEOUT', 1);
 
 ```
