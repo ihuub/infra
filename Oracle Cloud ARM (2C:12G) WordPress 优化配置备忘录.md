@@ -1,8 +1,10 @@
 # Oracle Cloud WordPress 优化配置备忘录
 
 **生成时间**: 2026年02月03日
-**服务器架构**: ARM64 (1 vCPU, 6GB RAM)
+**服务器架构**: ARM64 (1 OCPU, 6GB RAM)
 **环境组件**: Nginx, PHP 8.3, MariaDB 10.11, Redis
+**4个插件**: 终极会员(用户登录注册和管理)；Redis Object Cache；TaxoPress(标签管理)；Loggedin - Limit Concurrent Sessions
+
 
 ## 1. MariaDB 10.11 数据库配置
 
@@ -32,8 +34,6 @@ innodb_buffer_pool_size = 2G
 `systemctl restart php8.3-fpm`
 
 **文件路径**: `/etc/php/8.3/fpm/pool.d/www.conf`
-
-> **说明**: 限制子进程数量以保护 2 核 CPU 不被过载，同时给予充足的内存。
 
 ```ini
 ; 进程管理模式
