@@ -12,18 +12,19 @@
 
 ```ini
 [mysqld]
-# 核心内存分配 (总内存的 50%)
-innodb_buffer_pool_size = 6G
+
+# 禁用旧版查询缓存
+query_cache_type = 0
+query_cache_size = 0
 
 # I/O 写入优化 (极大提升写入性能)
 innodb_flush_log_at_trx_commit = 2
 
 # 最大连接数
-max_connections = 500
+max_connections = 150
 
-# 禁用旧版查询缓存
-query_cache_type = 0
-query_cache_size = 0
+# 核心内存分配 (总内存的 50%)
+innodb_buffer_pool_size = 2G
 
 ```
 
