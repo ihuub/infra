@@ -6,16 +6,14 @@
 
 ## 1. MariaDB 10.11 数据库配置
 
+`systemctl restart mariadb`
+
 **文件路径**: `/etc/mysql/mariadb.conf.d/50-server.cnf`
 
 > **说明**: 利用大内存优势减少磁盘读取，优化写入策略。
 
 ```ini
 [mysqld]
-
-# 禁用旧版查询缓存
-query_cache_type = 0
-query_cache_size = 0
 
 # I/O 写入优化 (极大提升写入性能)
 innodb_flush_log_at_trx_commit = 2
@@ -25,12 +23,13 @@ max_connections = 150
 
 # 核心内存分配 (总内存的 50%)
 innodb_buffer_pool_size = 2G
-
 ```
 
 ---
 
 ## 2. PHP 8.3 FPM 进程池配置
+
+`systemctl restart php8.3-fpm`
 
 **文件路径**: `/etc/php/8.3/fpm/pool.d/www.conf`
 
@@ -41,15 +40,15 @@ innodb_buffer_pool_size = 2G
 pm = dynamic
 
 ; 最大子进程 (防止 CPU 100% 卡死)
-pm.max_children = 20
+pm.max_children = 8
 
 ; 启动与空闲进程控制
-pm.start_servers = 3
-pm.min_spare_servers = 2
-pm.max_spare_servers = 6
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
 
 ; 单进程内存限制
-php_admin_value[memory_limit] = 512M
+php_admin_value[memory_limit] = 256M
 
 ```
 
