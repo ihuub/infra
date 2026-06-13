@@ -84,7 +84,7 @@ opcache.max_accelerated_files=20000
 
 ```conf
 # 内存上限
-maxmemory 1gb
+maxmemory 512mb
 
 # 内存淘汰策略 (所有键中使用 LRU 算法)
 maxmemory-policy allkeys-lru
