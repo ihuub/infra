@@ -97,8 +97,6 @@ maxmemory-policy allkeys-lru
 
 **文件路径**: `wp-config.php` (位于网站根目录)
 
-> **说明**: 连接 Redis 并开启 WordPress 缓存机制。
-
 ```php
 // 开启缓存总开关
 define( 'WP_CACHE', true );
