@@ -1,7 +1,7 @@
-# Oracle Cloud ARM (2C/12G) WordPress 优化配置备忘录
+# Oracle Cloud WordPress 优化配置备忘录
 
 **生成时间**: 2026年02月03日
-**服务器架构**: ARM64 (2 vCPU, 12GB RAM)
+**服务器架构**: ARM64 (1 vCPU, 6GB RAM)
 **环境组件**: Nginx, PHP 8.3, MariaDB 10.11, Redis
 
 ## 1. MariaDB 10.11 数据库配置
