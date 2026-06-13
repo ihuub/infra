@@ -23,7 +23,7 @@ innodb_flush_log_at_trx_commit = 2
 # 最大连接数
 max_connections = 60
 
-innodb_buffer_pool_size = 3G
+innodb_buffer_pool_size = 2G
 ```
 
 ---
