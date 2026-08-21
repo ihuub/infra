@@ -90,7 +90,7 @@ case $choice in
         run_cmd "systemctl status xray --no-pager"
         ;;
     16)
-        run_cmd "find /var/log -type f -regex '.*\.[1-9]\(\.gz\)\?' -print -delete' -print -delete"
+        run_cmd "find /var/log -type f -regex '.*\.\(1\|[1-9]\.gz\)' -print -delete"
         ;;
     17)
         # 增加判断，防止 setfacl 未安装导致报错
