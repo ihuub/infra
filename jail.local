@@ -1,3 +1,5 @@
+# /etc/fail2ban/jail.local
+
 [DEFAULT]
 findtime = 1d
 maxretry = 1
@@ -9,3 +11,9 @@ ignoreip = 127.0.0.1/8 ::1
 enabled = true
 filter  = sshd[mode=aggressive]
 backend = systemd
+
+[nginx-bad-request]
+enabled  = true
+filter   = nginx-bad-request
+logpath  = /var/log/nginx/access.log
+backend = pyinotify
