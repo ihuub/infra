@@ -13,6 +13,8 @@
 
 `systemctl restart mariadb`
 
+`my_print_defaults mysqld`显示的是配置文件解析出的参数
+
 **文件路径**: `/etc/mysql/mariadb.conf.d/50-server.cnf`
 
 > **说明**: 利用大内存优势减少磁盘读取，优化写入策略。
