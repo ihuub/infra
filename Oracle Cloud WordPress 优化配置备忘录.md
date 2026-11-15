@@ -87,11 +87,22 @@ opcache.max_accelerated_files=10000
 > **说明**: 限制最大内存防止系统 OOM，采用 LRU 算法自动清理旧缓存。
 
 ```conf
-# 内存上限
+# 只允许本机访问
+bind 127.0.0.1
+
+protected-mode yes
+
+# Redis 最大内存
 maxmemory 512mb
 
-# 内存淘汰策略 (所有键中使用 LRU 算法)
+# 达到内存限制时淘汰最近较少使用的键
 maxmemory-policy allkeys-lru
+
+# 关闭 RDB 定时持久化
+save ""
+
+# 关闭 AOF
+appendonly no
 
 ```
 
