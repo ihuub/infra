@@ -90,6 +90,8 @@ opcache.revalidate_freq=60
 
 ## 4. Redis 服务器配置
 
+`systemctl restart redis-server`
+
 **文件路径**: `/etc/redis/redis.conf`
 
 > **说明**: 限制最大内存防止系统 OOM，采用 LRU 算法自动清理旧缓存。
