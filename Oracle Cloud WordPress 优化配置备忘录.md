@@ -1,4 +1,4 @@
-# Oracle Cloud WordPress 优化配置备忘录
+# WordPress 优化配置备忘录
 
 **生成时间**：2026年11月15日
 
