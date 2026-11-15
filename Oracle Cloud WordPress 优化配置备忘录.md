@@ -50,6 +50,8 @@ innodb_buffer_pool_dump_at_shutdown = ON/innodb_buffer_pool_load_at_startup = ON
 
 `systemctl restart php8.3-fpm`
 
+`php-fpm8.3 -tt` 查看配置
+
 **文件路径**: `/etc/php/8.3/fpm/pool.d/www.conf`
 
 **php_admin_value[memory_limit]要写在pool路径下**
