@@ -27,6 +27,9 @@ innodb_flush_log_at_trx_commit = 1
 max_connections = 60
 
 innodb_buffer_pool_size = 4G
+
+#默认开启
+innodb_buffer_pool_dump_at_shutdown = ON/innodb_buffer_pool_load_at_startup = ON
 ```
 
 ---
@@ -75,6 +78,9 @@ opcache.interned_strings_buffer=16
 
 ; 最大缓存文件数
 opcache.max_accelerated_files=10000
+
+opcache.validate_timestamps=1
+opcache.revalidate_freq=60
 
 ```
 
