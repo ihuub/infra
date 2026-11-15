@@ -1,8 +1,11 @@
 # Oracle Cloud WordPress 优化配置备忘录
 
 **生成时间**: 2026年11月15日
-**服务器架构**: ARM64 (1 OCPU, 6GB RAM)
+
+**服务器架构**: ARM64 (2 OCPU, 12GB RAM)
+
 **环境组件**: Nginx, PHP 8.3, MariaDB 10.11, Redis
+
 **4个插件**: 终极会员(用户登录注册和管理)；Redis Object Cache；TaxoPress(标签管理)；Loggedin - Limit Concurrent Sessions
 
 
