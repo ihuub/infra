@@ -1,6 +1,6 @@
 # Oracle Cloud WordPress 优化配置备忘录
 
-**生成时间**: 2026年02月03日
+**生成时间**: 2026年11月15日
 **服务器架构**: ARM64 (1 OCPU, 6GB RAM)
 **环境组件**: Nginx, PHP 8.3, MariaDB 10.11, Redis
 **4个插件**: 终极会员(用户登录注册和管理)；Redis Object Cache；TaxoPress(标签管理)；Loggedin - Limit Concurrent Sessions
@@ -18,12 +18,12 @@
 [mysqld]
 
 # I/O 写入优化 (极大提升写入性能)
-innodb_flush_log_at_trx_commit = 2
+innodb_flush_log_at_trx_commit = 1
 
 # 最大连接数
 max_connections = 60
 
-innodb_buffer_pool_size = 2G
+innodb_buffer_pool_size = 4G
 ```
 
 ---
@@ -33,6 +33,7 @@ innodb_buffer_pool_size = 2G
 `systemctl restart php8.3-fpm`
 
 **文件路径**: `/etc/php/8.3/fpm/pool.d/www.conf`
+**php_admin_value[memory_limit]要写在pool路径下**
 
 ```ini
 ; 进程管理模式
@@ -97,9 +98,6 @@ maxmemory-policy allkeys-lru
 **文件路径**: `wp-config.php` (位于网站根目录)
 
 ```php
-//--- 开启缓存总开关 ---
-define( 'WP_CACHE', true );
-
 // --- Redis TCP 连接配置 (删除 SCHEME 和 PATH) ---
 define('WP_REDIS_HOST', '127.0.0.1');
 define('WP_REDIS_PORT', 6379);
