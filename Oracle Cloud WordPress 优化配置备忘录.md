@@ -95,9 +95,10 @@ opcache.revalidate_freq=60
 > **说明**: 限制最大内存防止系统 OOM，采用 LRU 算法自动清理旧缓存。
 
 ```conf
-# 只允许本机访问
-bind 127.0.0.1
+# 只允许本机访问，-表示该地址绑定失败时，不要因此导致 Redis 启动失败
+bind 127.0.0.1 -::1
 
+# 防止不安全的远程访问
 protected-mode yes
 
 # Redis 最大内存
