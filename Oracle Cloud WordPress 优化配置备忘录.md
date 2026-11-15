@@ -32,7 +32,7 @@ WHERE Variable_name IN (
 ```ini
 [mysqld]
 
-# I/O 写入优化 (极大提升写入性能)
+# 保障事务持久性，每次提交都刷新 InnoDB 日志
 innodb_flush_log_at_trx_commit = 1
 
 # 最大连接数
