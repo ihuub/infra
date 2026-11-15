@@ -33,6 +33,7 @@ innodb_buffer_pool_size = 4G
 `systemctl restart php8.3-fpm`
 
 **文件路径**: `/etc/php/8.3/fpm/pool.d/www.conf`
+
 **php_admin_value[memory_limit]要写在pool路径下**
 
 ```ini
