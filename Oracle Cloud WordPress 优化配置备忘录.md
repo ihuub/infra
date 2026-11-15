@@ -41,7 +41,8 @@ max_connections = 60
 innodb_buffer_pool_size = 4G
 
 #默认开启
-innodb_buffer_pool_dump_at_shutdown = ON/innodb_buffer_pool_load_at_startup = ON
+#innodb_buffer_pool_dump_at_shutdown = ON
+#innodb_buffer_pool_load_at_startup = ON
 ```
 
 ---
