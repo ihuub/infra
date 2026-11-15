@@ -102,6 +102,8 @@ opcache.revalidate_freq=60
 
 `systemctl restart redis-server`
 
+`redis-cli CONFIG GET bind protected-mode  maxmemory maxmemory-policy  save appendonly` 查询运行中的配置
+
 **文件路径**: `/etc/redis/redis.conf`
 
 > **说明**: 限制最大内存防止系统 OOM，采用 LRU 算法自动清理旧缓存。
