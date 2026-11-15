@@ -1,21 +1,33 @@
 # Oracle Cloud WordPress 优化配置备忘录
 
-**生成时间**: 2026年11月15日
+**生成时间**：2026年11月15日
 
-**服务器架构**: ARM64 (2 OCPU, 12GB RAM)
+**服务器架构**：ARM64 (2 OCPU, 12GB RAM)
 
-**环境组件**: Nginx, PHP 8.3, MariaDB 10.11, Redis
+**环境组件**：Nginx, PHP 8.3, MariaDB 10.11, Redis
 
-**4个插件**: 终极会员(用户登录注册和管理)；Redis Object Cache；TaxoPress(标签管理)；Loggedin - Limit Concurrent Sessions
+**4个插件**：终极会员（用户登录注册和管理）；Redis Object Cache；TaxoPress（标签管理）；Loggedin - Limit Concurrent Sessions
 
+---
 
 ## 1. MariaDB 10.11 数据库配置
 
-`systemctl restart mariadb`
+**重启 MariaDB：**
 
-`my_print_defaults mysqld`显示配置文件解析出的参数
+```bash
+systemctl restart mariadb
+```
 
-`mariadb -e "
+**查看配置文件解析出的参数：**
+
+```bash
+my_print_defaults mysqld
+```
+
+**查询运行中的参数：**
+
+```bash
+mariadb -e "
 SHOW GLOBAL VARIABLES
 WHERE Variable_name IN (
 'innodb_flush_log_at_trx_commit',
@@ -23,11 +35,18 @@ WHERE Variable_name IN (
 'innodb_buffer_pool_size',
 'innodb_buffer_pool_dump_at_shutdown',
 'innodb_buffer_pool_load_at_startup'
-);"` 查询运行中的参数
+);"
+```
 
-**文件路径**: `/etc/mysql/mariadb.conf.d/50-server.cnf`
+**文件路径：**
 
-> **说明**: 利用大内存优势减少磁盘读取，优化写入策略。
+```text
+/etc/mysql/mariadb.conf.d/50-server.cnf
+```
+
+> **说明**：利用大内存优势减少磁盘读取，优化写入策略。
+
+**配置内容：**
 
 ```ini
 [mysqld]
@@ -40,22 +59,36 @@ max_connections = 60
 
 innodb_buffer_pool_size = 4G
 
-#默认开启
-#innodb_buffer_pool_dump_at_shutdown = ON
-#innodb_buffer_pool_load_at_startup = ON
+# 默认开启
+# innodb_buffer_pool_dump_at_shutdown = ON
+# innodb_buffer_pool_load_at_startup = ON
 ```
 
 ---
 
 ## 2. PHP 8.3 FPM 进程池配置
 
-`systemctl restart php8.3-fpm`
+**重启 PHP-FPM：**
 
-`php-fpm8.3 -tt` 查看配置
+```bash
+systemctl restart php8.3-fpm
+```
 
-**文件路径**: `/etc/php/8.3/fpm/pool.d/www.conf`
+**检查配置：**
 
-**php_admin_value[memory_limit]要写在pool路径下**
+```bash
+php-fpm8.3 -tt
+```
+
+**文件路径：**
+
+```text
+/etc/php/8.3/fpm/pool.d/www.conf
+```
+
+**注意**：`php_admin_value[memory_limit]` 要写在对应的 pool 配置段 `[www]` 下。
+
+**配置内容：**
 
 ```ini
 ; 进程管理模式
@@ -70,18 +103,27 @@ pm.min_spare_servers = 2
 pm.max_spare_servers = 6
 
 pm.max_requests = 500
-php_admin_value[memory_limit] = 256M
 
+php_admin_value[memory_limit] = 256M
 ```
 
 ---
 
 ## 3. PHP Opcache 配置
 
-`php -i | grep -E 'opcache.enable|opcache.enable_cli|opcache.memory_consumption|opcache.interned_strings_buffer|opcache.max_accelerated_files|opcache.validate_timestamps|opcache.revalidate_freq'`  查看配置
+**查看当前配置：**
 
+```bash
+php -i | grep -E 'opcache.enable|opcache.enable_cli|opcache.memory_consumption|opcache.interned_strings_buffer|opcache.max_accelerated_files|opcache.validate_timestamps|opcache.revalidate_freq'
+```
 
-**文件路径**: `/etc/php/8.3/fpm/conf.d/10-opcache.ini`
+**文件路径：**
+
+```text
+/etc/php/8.3/fpm/conf.d/10-opcache.ini
+```
+
+**配置内容：**
 
 ```ini
 zend_extension=opcache.so
@@ -99,23 +141,36 @@ opcache.max_accelerated_files=10000
 
 opcache.validate_timestamps=1
 opcache.revalidate_freq=60
-
 ```
 
 ---
 
 ## 4. Redis 服务器配置
 
-`systemctl restart redis-server`
+**重启 Redis：**
 
-`redis-cli CONFIG GET bind protected-mode  maxmemory maxmemory-policy  save appendonly` 查询运行中的配置
+```bash
+systemctl restart redis-server
+```
 
-**文件路径**: `/etc/redis/redis.conf`
+**查询运行中的配置：**
 
-> **说明**: 限制最大内存防止系统 OOM，采用 LRU 算法自动清理旧缓存。
+```bash
+redis-cli CONFIG GET bind protected-mode maxmemory maxmemory-policy save appendonly
+```
+
+**文件路径：**
+
+```text
+/etc/redis/redis.conf
+```
+
+> **说明**：限制最大内存防止系统 OOM，采用 LRU 算法自动清理旧缓存。
+
+**配置内容：**
 
 ```conf
-# 只允许本机访问，-表示该地址绑定失败时，不要因此导致 Redis 启动失败
+# 只允许本机访问，- 表示该地址绑定失败时，不要因此导致 Redis 启动失败
 bind 127.0.0.1 -::1
 
 # 防止不安全的远程访问
@@ -132,17 +187,25 @@ save ""
 
 # 关闭 AOF
 appendonly no
-
 ```
 
 ---
 
 ## 5. WordPress 配置文件
 
-**文件路径**: `wp-config.php` (位于网站根目录)
+**文件路径：**
+
+```text
+wp-config.php
+```
+
+（位于网站根目录）
+
+**Redis TCP 连接配置：**
 
 ```php
 // --- Redis TCP 连接配置 (删除 SCHEME 和 PATH) ---
+
 define('WP_REDIS_HOST', '127.0.0.1');
 define('WP_REDIS_PORT', 6379);
 
@@ -150,5 +213,6 @@ define('WP_REDIS_PERSISTENT', true);
 define('WP_REDIS_DATABASE', 0);
 define('WP_REDIS_TIMEOUT', 1);
 define('WP_REDIS_READ_TIMEOUT', 1);
-
 ```
+
+---
