@@ -77,6 +77,9 @@ php_admin_value[memory_limit] = 256M
 
 ## 3. PHP Opcache 配置
 
+`php -i | grep -E 'opcache.enable|opcache.enable_cli|opcache.memory_consumption|opcache.interned_strings_buffer|opcache.max_accelerated_files|opcache.validate_timestamps|opcache.revalidate_freq'`  查看配置
+
+
 **文件路径**: `/etc/php/8.3/fpm/conf.d/10-opcache.ini`
 
 ```ini
